@@ -33,10 +33,18 @@ app.get('/stream.mp3', function (req, res) {
     //});
 
     // Note. Using this technique there is considerable delay in the audio.
+    // Playing from Loopback,0,0
+    // Send audio to this with a command like
+    // aplay -D hw:Loopback,1,0 decoded.wav
+    // or
+    // ffmpeg -i sample.mp3 -f alsa hw:Loopback,1,0
     ffmpeg = spawn('ffmpeg', ['-f', 'alsa', '-ac', '2', '-i', 'hw:Loopback,0,0', '-codec:a', 'libmp3lame',
      '-qscale:a', '2', '-f', 'mp3', '-']);
     ffmpeg.stdout.on('data', (data)=>{
        res.write(data);
+    });
+    ffmpeg.on('error', (err)=>{
+       console.log("ffmpeg error", err);
     });
   });
 

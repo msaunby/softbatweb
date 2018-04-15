@@ -33,7 +33,7 @@ app.get('/stream.mp3', function (req, res) {
     //});
 
     // Note. Using this technique there is considerable delay in the audio.
-    ffmpeg = spawn('ffmpeg', ['-f', 'alsa', '-ac', '2', '-i', 'hw:0', '-codec:a', 'libmp3lame',
+    ffmpeg = spawn('ffmpeg', ['-f', 'alsa', '-ac', '2', '-i', 'hw:Loopback,0,0', '-codec:a', 'libmp3lame',
      '-qscale:a', '2', '-f', 'mp3', '-']);
     ffmpeg.stdout.on('data', (data)=>{
        res.write(data);
